@@ -1,0 +1,38 @@
+---
+
+## Install Etherpad docker
+- name: Install gitlab docker
+  template:
+    src: gitlab.yaml.j2
+    dest: /home/docker/gitlab.yaml
+    owner: root
+    group: root
+    mode: 0400
+  notify: 
+    - start gitlab docker
+
+## Backup Etherpad section
+- name: Install Gitlab backup compose file
+  template:
+    src: backup.yaml.j2
+    dest: /home/docker/backups/backup-gitlab.yaml
+    owner: root
+    group: root
+    mode: 0400
+  when: inventory_hostname in groups['maintenance_contract']
+
+- name: add cron job to run data backup every day
+  cron:
+    name: backup gitlab data
+    minute: 03
+    hour: 5
+    job: /usr/bin/docker exec -t gitlab gitlab-backup
+  when: inventory_hostname in groups['maintenance_contract']
+
+- name: add cron job to push backup every day to openstack
+  cron:
+    name: backup gitlab
+    minute: 33
+    hour: 5
+    job: /usr/local/bin/docker-compose -f /home/docker/backups/backup-gitlab.yaml run --rm backup_gitlab 
+  when: inventory_hostname in groups['maintenance_contract']
