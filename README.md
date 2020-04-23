@@ -3,6 +3,7 @@
 [![](https://img.shields.io/badge/licence-AGPL--3-blue.svg)](http://www.gnu.org/licenses/agpl "License: AGPL-3")
 
 This role allows you to deploy Gitlab docker with associated postfix relay
+This role also embeds automatic backups towards swift storage every day (with a retention of 30 backups) using duplicity based on [Tecnativa docker image](https://hub.docker.com/r/tecnativa/duplicity). See [Ansible docker odoo role](https://github.com/lefilament/ansible_role_odoo_docker/blob/master/files/Dockerfile-backup) for building that docker image.
 
 Prior to running this role, you would need to have docker installed on your server and a traefik proxy (which is the purpose of [this role](https://github.com/lefilament/ansible_role_docker_server))
 
@@ -22,6 +23,15 @@ ansible_ssh_port:
 ## GitLab configuration
 # GitLab URL
 git_url:
+
+## Backup Swift Storage configuration
+swift_username:
+swift_password:
+swift_authurl:
+swift_authversion:
+swift_tenantname:
+swift_tenantid:
+swift_regionname:
 
 ```
 
