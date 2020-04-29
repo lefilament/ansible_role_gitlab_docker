@@ -11,7 +11,7 @@
   notify: 
     - start gitlab docker
 
-## Backup Etherpad section
+## Backup Gitlab section
 - name: Install Gitlab backup compose file
   template:
     src: backup.yaml.j2
@@ -21,12 +21,20 @@
     mode: 0400
   when: inventory_hostname in groups['maintenance_contract']
 
+- name: Copy docker file for postgres duplicity
+  copy:
+    src: ../docker_odoo/files/Dockerfile-backup
+    dest: /home/docker/backups/Dockerfile-postgres
+    owner: root
+    group: root
+    mode: 0644
+
 - name: add cron job to run data backup every day
   cron:
     name: backup gitlab data
     minute: 03
     hour: 5
-    job: /usr/bin/docker exec -t gitlab gitlab-backup
+    job: /usr/bin/docker exec gitlab gitlab-backup
   when: inventory_hostname in groups['maintenance_contract']
 
 - name: add cron job to push backup every day to openstack
