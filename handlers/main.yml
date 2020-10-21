@@ -1,7 +1,7 @@
 ---
 
 - name: start gitlab docker
-  docker_service:
+  docker_compose:
     project_src: /home/docker/
     files: gitlab.yaml
     project_name: gitlab

@@ -7,7 +7,7 @@
     dest: /home/docker/gitlab.yaml
     owner: root
     group: root
-    mode: 0400
+    mode: '0400'
   notify: 
     - start gitlab docker
 
@@ -18,29 +18,21 @@
     dest: /home/docker/backups/backup-gitlab.yaml
     owner: root
     group: root
-    mode: 0400
+    mode: '0400'
   when: inventory_hostname in groups['maintenance_contract']
-
-- name: Copy docker file for postgres duplicity
-  copy:
-    src: ../docker_odoo/files/Dockerfile-backup
-    dest: /home/docker/backups/Dockerfile-postgres
-    owner: root
-    group: root
-    mode: 0644
 
 - name: add cron job to run data backup every day
   cron:
     name: backup gitlab data
-    minute: 03
-    hour: 5
+    minute: "03"
+    hour: "5"
     job: /usr/bin/docker exec gitlab gitlab-backup
   when: inventory_hostname in groups['maintenance_contract']
 
 - name: add cron job to push backup every day to openstack
   cron:
     name: backup gitlab
-    minute: 33
-    hour: 5
+    minute: "33"
+    hour: "5"
     job: /usr/local/bin/docker-compose -f /home/docker/backups/backup-gitlab.yaml run --rm backup_gitlab 
   when: inventory_hostname in groups['maintenance_contract']

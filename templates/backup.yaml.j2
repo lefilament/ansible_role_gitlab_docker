@@ -1,25 +1,21 @@
 version: "2.1"
 services:
     backup_gitlab:
-        build:
-            context: .
-            dockerfile: Dockerfile-postgres
-        image: filament/duplicity:postgres
+        image: tecnativa/duplicity:postgres
         hostname: backup-gitlab
-        domainname: "{{ git_url }}"
         environment:
             DST: "swift://gitlab_{{ inventory_hostname|lower }}"
             PGDATABASE: "none"
             PGPASSWORD: "none"
             PGUSER: "none"
             PASSPHRASE: "{{ srv_proxy_pass }}"
-            SWIFT_USERNAME: "{{ swift_username }}"
-            SWIFT_PASSWORD: "{{ swift_password }}"
-            SWIFT_AUTHURL: "{{ swift_authurl }}"
-            SWIFT_AUTHVERSION: {{ swift_authversion }}
-            SWIFT_TENANTNAME: "{{ swift_tenantname }}"
-            SWIFT_TENANTID: "{{ swift_tenantid }}"
-            SWIFT_REGIONNAME: "{{ swift_regionname }}"
+            SWIFT_USERNAME: "{{ swift_odoo_username }}"
+            SWIFT_PASSWORD: "{{ swift_odoo_password }}"
+            SWIFT_AUTHURL: "{{ swift_odoo_authurl }}"
+            SWIFT_AUTHVERSION: {{ swift_odoo_authversion }}
+            SWIFT_TENANTNAME: "{{ swift_odoo_tenantname }}"
+            SWIFT_TENANTID: "{{ swift_odoo_tenantid }}"
+            SWIFT_REGIONNAME: "{{ swift_odoo_regionname }}"
             JOB_200_WHEN: "never"
             JOB_300_WHAT: "dup full $$SRC $$DST"
             JOB_302_WHAT: "dup remove-all-but-n-full 30 --force $$DST $$@"
