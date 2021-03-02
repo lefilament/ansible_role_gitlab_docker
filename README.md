@@ -21,7 +21,7 @@ ansible_become_pass:
 ansible_port: 
 
 ## GitLab configuration
-# GitLab URL
+# GitLab URL (only sub.domain without https:// in front)
 git_url:
 
 ## Backup Swift Storage configuration
