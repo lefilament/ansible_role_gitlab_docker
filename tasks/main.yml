@@ -8,7 +8,7 @@
     owner: root
     group: root
     mode: '0400'
-  notify: 
+  notify:
     - start gitlab docker
 
 ## Backup Gitlab section
@@ -16,6 +16,15 @@
   template:
     src: backup.yaml.j2
     dest: /home/docker/backups/backup-gitlab.yaml
+    owner: root
+    group: root
+    mode: '0400'
+  when: inventory_hostname in groups['maintenance_contract']
+
+- name: Install Gitlab backup2 compose file
+  template:
+    src: backup2.yaml.j2
+    dest: /home/docker/backups/backup2-gitlab.yaml
     owner: root
     group: root
     mode: '0400'
@@ -34,5 +43,13 @@
     name: backup gitlab
     minute: "33"
     hour: "5"
-    job: /usr/local/bin/docker-compose -f /home/docker/backups/backup-gitlab.yaml run --rm backup_gitlab 
+    job: /usr/local/bin/docker-compose -f /home/docker/backups/backup-gitlab.yaml run --rm backup_gitlab
+  when: inventory_hostname in groups['maintenance_contract']
+
+- name: add cron job to push backup2 every day to openstack
+  cron:
+    name: backup2 gitlab
+    minute: "45"
+    hour: "7"
+    job: /usr/local/bin/docker-compose -f /home/docker/backups/backup2-gitlab.yaml run --rm backup_gitlab
   when: inventory_hostname in groups['maintenance_contract']

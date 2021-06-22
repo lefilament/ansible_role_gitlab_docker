@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: Rémi
+  description: Deploy GitLab on Docker
+  company: Le Filament (https://le-filament.com)
+  license: AGPL-3.0-or-later
+  min_ansible_version: 2.1
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+        - focal
+  galaxy_tags:
+    - docker
+    - communityedition
+    - gitlab
