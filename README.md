@@ -2,7 +2,7 @@ docker_gitlab
 ==============
 
 This role deploys GitLab on Docker
-The main repo for this role is on [Le Filament GitLab](https://sources.le-filament.com/lefilament/ansible-roles/docker_server.git)
+The main repo for this role is on [Le Filament GitLab](https://sources.le-filament.com/lefilament/ansible-roles/docker_gitlab.git)
 
 Requirements
 ------------
