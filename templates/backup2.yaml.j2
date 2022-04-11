@@ -2,7 +2,7 @@ version: "2.1"
 services:
     backup_gitlab:
         image: tecnativa/duplicity:postgres
-        hostname: backup-gitlab
+        hostname: {{ inventory_hostname_short | lower | regex_replace('_','') }}-gitlab
         environment:
             DST: "swift://gitlab_{{ inventory_hostname|lower }}"
             PGDATABASE: "none"
@@ -23,9 +23,11 @@ services:
         command:
             - /etc/periodic/daily/jobrunner
         volumes:
+            - gitlab_backup2_cache:/root/.cache/duplicity/
             - gitlab_config:/mnt/backup/src/config:z
             - /var/lib/docker/volumes/gitlab_data/_data/backups/:/mnt/backup/src/data_backups:z
 
 volumes:
+    gitlab_backup2_cache:
     gitlab_config:
         external: true
